@@ -298,6 +298,9 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
 
   <div class="nav-section">Deliverables</div>
   <button class="nav-item" onclick="showPage('deliverables',this)"><div class="nav-dot" style="background:#185FA5"></div>AI Deliverables<div class="nav-badge">New</div></button>
+  <div class="nav-section">Community College</div>
+  <button class="nav-item" onclick="showPage('leh',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Rate Calculator<div class="nav-badge">New</div></button>
+  <button class="nav-item" onclick="showPage('leh-ref',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Reference Tables</button>
   <div class="nav-section">Work Authorization / EAD</div>
   <button class="nav-item" onclick="showPage('ead-responses',this)"><div class="nav-dot" style="background:#534AB7"></div>EAD Response Prompts</button>
   <button class="nav-item" onclick="showPage('ead-expired',this)"><div class="nav-dot" style="background:#993C1D"></div>Expired EAD Handling</button>
@@ -380,7 +383,13 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
       <div class="hc-sub">PowerPoints, Excel analysis, SOPs, and modern HR documents with AI</div>
       <div class="hc-tag tag-blue">New</div>
     </div>
-        <div class="home-card c-green" onclick="showPage('gov',this)">
+        <div class="home-card c-blue" onclick="showPage('leh',this)">
+      <div class="hc-icon">🧮</div>
+      <div class="hc-title">LEH Rate Calculator</div>
+      <div class="hc-sub">Calculate the correct FY26 LEH pay rate for rehired adjunct faculty</div>
+      <div class="hc-tag tag-blue">New</div>
+    </div>
+    <div class="home-card c-green" onclick="showPage('gov',this)">
       <div class="hc-icon">🏛️</div>
       <div class="hc-title">Gov. Sources</div>
       <div class="hc-sub">DHS, USCIS, ICE, DOL, EEOC — how to research each agency with AI</div>
@@ -2809,6 +2818,343 @@ Keep it to one page or two pages maximum. Use tables or bullet points. Avoid par
 
 </div>
 
+
+<div class="page" id="page-leh">
+  <div class="page-eyebrow ey-blue">Interactive Tool</div>
+  <h1 class="page-title">LEH Rate Calculator</h1>
+  <p class="page-sub">Calculate the correct FY26 Lecture Equivalent Hours (LEH) pay rate for a rehired adjunct faculty member. Answer the questions below and the calculator will walk through every step.</p>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div><strong>Before you start:</strong> Have the adjunct's wage record open. You will need their last teaching semester, their prior LEH rate, and whether they received the 9/1 annual increase after they stopped teaching.</div>
+  </div>
+
+  <!-- STEP 1: INPUTS -->
+  <div class="card" id="leh-inputs">
+    <h2 class="section-title">Step 1 — Enter Employment Information</h2>
+
+    <div class="builder-grid">
+      <div class="form-group">
+        <label>Last semester taught</label>
+        <select id="leh-semester">
+          <option value="">— Select —</option>
+          <option value="Fall 2025">Fall 2025 (FY26)</option>
+          <option value="Spring 2025">Spring 2025 (FY25)</option>
+          <option value="Summer 2025">Summer 2025 (FY25)</option>
+          <option value="Fall 2024">Fall 2024 (FY25)</option>
+          <option value="Spring 2024">Spring 2024 (FY24)</option>
+          <option value="Summer 2024">Summer 2024 (FY24)</option>
+          <option value="Fall 2023">Fall 2023 (FY24)</option>
+          <option value="Spring 2023">Spring 2023 (FY23)</option>
+          <option value="Summer 2023">Summer 2023 (FY23)</option>
+          <option value="Fall 2022">Fall 2022 (FY23)</option>
+          <option value="Spring 2022">Spring 2022 (FY22)</option>
+          <option value="Summer 2022">Summer 2022 (FY22)</option>
+          <option value="Fall 2021">Fall 2021 (FY22)</option>
+          <option value="Spring 2021">Spring 2021 (FY21)</option>
+          <option value="Summer 2021">Summer 2021 (FY21)</option>
+          <option value="Fall 2020">Fall 2020 (FY21)</option>
+          <option value="Spring 2020">Spring 2020 (FY20)</option>
+          <option value="Summer 2020">Summer 2020 (FY20)</option>
+          <option value="Fall 2019">Fall 2019 (FY20)</option>
+          <option value="Spring 2019">Spring 2019 (FY19)</option>
+          <option value="Summer 2019">Summer 2019 (FY19)</option>
+          <option value="Fall 2018">Fall 2018 (FY19)</option>
+          <option value="earlier">Earlier than Fall 2018</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Prior LEH rate (last fiscal year they taught)</label>
+        <input id="leh-rate" type="number" step="0.01" min="0" placeholder="e.g. 1371.00">
+      </div>
+
+      <div class="form-group">
+        <label>Did they receive the 9/1 annual increase AFTER their last teaching assignment?</label>
+        <select id="leh-got-raise">
+          <option value="">— Select —</option>
+          <option value="yes">Yes — wage record shows 9/1 increase after they stopped teaching</option>
+          <option value="no">No — wage record shows NO 9/1 increase after they stopped</option>
+          <option value="unsure">Unsure — wage record not available</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Highest applicable degree</label>
+        <select id="leh-degree">
+          <option value="">— Select —</option>
+          <option value="phd">PhD</option>
+          <option value="edd">EdD</option>
+          <option value="jd">JD</option>
+          <option value="dnp">DNP</option>
+          <option value="mfa">MFA</option>
+          <option value="masters">Master's</option>
+          <option value="bachelors">Bachelor's</option>
+          <option value="associates">Associate's</option>
+        </select>
+      </div>
+
+      <div class="form-group full" id="mfa-field" style="display:none">
+        <label>Is the MFA in a qualifying studio arts discipline? (Sculpture, Writing, Dance, Design, Directing, Drama, Live Design & Production, Performance, Playwriting, Painting, Drawing, Photography & Media, Print, Transmedia)</label>
+        <select id="leh-mfa-qualify">
+          <option value="">— Select —</option>
+          <option value="yes">Yes — MFA is in a qualifying studio arts field</option>
+          <option value="no">No — MFA is in another field</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="calcLEH()">⚡ Calculate FY26 LEH Rate</button>
+    <button class="btn-secondary" onclick="resetLEH()">Reset</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="leh-results" style="display:none">
+
+    <div id="leh-result-banner" class="card" style="background:var(--teal-l);border-color:var(--teal-m);margin-bottom:.85rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem">
+        <div>
+          <div class="lbl" style="color:var(--teal)">Recommended FY26 LEH Rate</div>
+          <div id="leh-final-rate" style="font-size:32px;font-weight:700;color:var(--teal)"></div>
+        </div>
+        <div id="leh-path-badge" class="risk-badge"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Step-by-Step Calculation</h2>
+      <div id="leh-steps"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Complete Reasoning</h2>
+      <div id="leh-reasoning" style="font-size:13px;line-height:1.8;color:var(--ink-2)"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Verification Checklist</h2>
+      <ul class="chk" id="leh-chk">
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Semester last taught correctly converted to fiscal year</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Determined if they were teaching on or after the relevant 9/1 date</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Wage record checked for any 9/1 increases after they stopped teaching</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Degree level and terminal status verified</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Correct calculation path selected based on break in service</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Did NOT apply raises already received</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Correct order of operations followed for their fiscal year</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">For FY23/FY24 raises: both % and dollar amount calculated, higher used</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">After each raise, rate compared to standard for that fiscal year</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Final rate compared to FY26 standard rate — higher selected</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">PhD rate check performed (calculated rate vs $1,521)</span></li>
+        <li onclick="toggleChk(this)"><div class="chk-box"></div><span class="chk-text">Final rate rounded UP to nearest whole dollar</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">📋 Clean System Prompt — For Direct Use in AI</h2>
+      <p style="font-size:13px;color:var(--ink-3);margin-bottom:.65rem">Copy this complete system prompt into Claude or ChatGPT, then paste the adjunct's details after it. The AI will follow the exact rules and respond in the required format.</p>
+      <div class="p-box">You are an LEH Track Calculator for rehired adjunct faculty.
+Your job is to calculate the correct FY26 LEH rate.
+Never return a blank output.
+
+If all required information is present, return:
+- final FY26 LEH rate
+- step-by-step calculation
+- degree classification
+- raise eligibility
+- standard rate comparison
+- final reasoning
+
+If required information is missing, return:
+Cannot Calculate
+Then list the missing fields.
+
+Required fields:
+- last taught semester or month/year
+- prior LEH rate
+- degree level
+- whether the relevant 9/1 increase was received, unless it can be assumed because the adjunct was teaching during or after that 9/1 date
+- MFA discipline if degree is MFA
+
+Rules:
+1. Convert last taught date to fiscal year.
+2. Classify the person as:
+   - FY25 continuous service
+   - FY24 one-year break
+   - FY23 two-year break
+   - FY22 or earlier long-term break
+3. Determine degree classification:
+   - PhD/Terminal Degree
+   - Master's or below
+4. Terminal degrees include PhD, EdD, JD, DNP, and qualifying MFA studio arts disciplines.
+5. Determine which raises were already received.
+Do not apply a raise that was already received.
+6. Apply the correct calculation path:
+   - FY25: apply FY26 raise only if not already received. No 6.25% correction.
+   - FY24: apply FY25 raise only if not already received. No FY26 raise due to break. No 6.25% correction.
+   - FY23: apply 6.25% correction first, then FY24 raise if not already received.
+   - FY22 or earlier: apply one raise for the fiscal year immediately after departure if not already received, then apply 6.25% correction.
+7. For FY24 and FY23 raises:
+   - calculate both the percentage raise and the flat-dollar raise
+   - use whichever is higher
+8. After each raise, compare to the standard rate for that fiscal year and degree level.
+Use the higher amount.
+9. Compare final calculated rate to FY26 standard rate:
+   - Master's or below: $1,435
+   - PhD/Terminal Degree: $1,521
+10. Use the higher amount.
+11. Round up to the nearest whole dollar only at the final step.
+12. If final amount is below $1,521, check whether the person has a PhD or terminal degree.
+
+Response format:
+FINAL FY26 LEH RATE: $____
+
+Then provide:
+- Classification
+- Inputs used
+- Raises already received
+- Raises applied
+- Step-by-step math
+- Standard rate comparison
+- PhD/terminal degree check
+- Rounding explanation
+- Missing information, if any
+- Warnings, if any<button class="copy-btn" onclick="cp(this)">Copy</button></div>
+      <div class="tone-tip" style="margin-top:.5rem"><div class="tone-tip-icon">💡</div><div><strong>How to use this prompt:</strong> Copy the prompt above, paste it into Claude or ChatGPT, then send a follow-up message with the adjunct's details (semester last taught, prior rate, degree, 9/1 raise status, MFA discipline if applicable). The AI will return the calculation in the required format.</div></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">AI Prompt — Get a Second Opinion</h2>
+      <p style="font-size:13px;color:var(--ink-3);margin-bottom:.65rem">Use this prompt to verify your calculation in Claude or ChatGPT. Fill in the bracketed values before pasting.</p>
+      <div class="p-box" id="leh-prompt-box">
+You are an expert at calculating LEH (Lecture Equivalent Hours) pay rates for adjunct faculty at a community college. Please verify this FY26 LEH rate calculation.
+
+ADJUNCT INFORMATION:
+- Last semester taught: [SEMESTER]
+- Fiscal year: [FY]
+- Prior LEH rate: $[RATE]
+- Received 9/1 annual increase after stopping: [YES/NO/UNSURE]
+- Highest degree: [DEGREE]
+- Terminal degree status: [YES/NO]
+
+FY26 STANDARD RATES:
+- Master's or below: $1,435
+- PhD/Terminal Degree: $1,521
+
+ANNUAL RAISE RATES:
+- FY26: 3% (effective 9/1/2025)
+- FY25: 4.5% (effective 9/1/2024)
+- FY24: Higher of 6% or $82 (effective 9/1/2023)
+- FY23: Higher of 5% or $93 (effective 9/1/2022)
+
+ORDER OF OPERATIONS:
+- Last taught FY24 or after: apply only missed raises, NO 6.25% correction
+- Last taught FY23: apply 6.25% correction FIRST, then FY24 raise if eligible
+- Last taught FY22 or earlier: apply ONE raise FIRST (immediately following FY), then 6.25% correction
+
+My calculated FY26 LEH rate is: $[YOUR RESULT]
+
+Please verify this calculation step by step, show all math, and confirm or correct the final rate. Round UP to nearest whole dollar.<button class="copy-btn" onclick="cp(this)">Copy</button></div>
+    </div>
+  </div>
+</div>
+
+
+<div class="page" id="page-leh-ref">
+  <div class="page-eyebrow ey-blue">Reference</div>
+  <h1 class="page-title">LEH Rate Reference Tables</h1>
+  <p class="page-sub">Quick reference for standard rates, raise percentages, fiscal year conversions, and terminal degree qualifications.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <h2 class="section-title">Standard Rates by Fiscal Year</h2>
+      <table class="ref-table">
+        <thead><tr><th>Fiscal Year</th><th>Master's or Below</th><th>PhD / Terminal</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FY26</strong></td><td>$1,435</td><td>$1,521</td></tr>
+          <tr><td>FY25</td><td>$1,413</td><td>$1,500</td></tr>
+          <tr><td>FY24</td><td>$1,371</td><td>$1,457</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h2 class="section-title">Annual Raise Percentages</h2>
+      <table class="ref-table">
+        <thead><tr><th>Fiscal Year</th><th>Raise</th><th>Effective Date</th></tr></thead>
+        <tbody>
+          <tr><td><strong>FY26</strong></td><td>3%</td><td>9/1/2025</td></tr>
+          <tr><td>FY25</td><td>4.5%</td><td>9/1/2024</td></tr>
+          <tr><td>FY24</td><td>Higher of 6% or $82</td><td>9/1/2023</td></tr>
+          <tr><td>FY23</td><td>Higher of 5% or $93</td><td>9/1/2022</td></tr>
+          <tr><td>FY22</td><td>4%</td><td>9/1/2021</td></tr>
+          <tr><td>FY21</td><td>2%</td><td>9/1/2020</td></tr>
+          <tr><td>FY20</td><td>3%</td><td>9/1/2019</td></tr>
+          <tr><td>FY19</td><td>3%</td><td>9/1/2018</td></tr>
+          <tr><td>FY18</td><td>5%</td><td>9/1/2017</td></tr>
+          <tr><td>FY17</td><td>3%</td><td>9/1/2016</td></tr>
+          <tr><td>FY16</td><td>3%</td><td>9/1/2015</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Fiscal Year Conversion Chart</h2>
+    <table class="ref-table">
+      <thead><tr><th>Semester</th><th>Fiscal Year</th><th>Date Range</th></tr></thead>
+      <tbody>
+        <tr><td>Fall 2025, Spring 2026, Summer 2026</td><td><strong>FY26</strong></td><td>9/1/2025 – 8/31/2026</td></tr>
+        <tr><td>Fall 2024, Spring 2025, Summer 2025</td><td>FY25</td><td>9/1/2024 – 8/31/2025</td></tr>
+        <tr><td>Fall 2023, Spring 2024, Summer 2024</td><td>FY24</td><td>9/1/2023 – 8/31/2024</td></tr>
+        <tr><td>Fall 2022, Spring 2023, Summer 2023</td><td>FY23</td><td>9/1/2022 – 8/31/2023</td></tr>
+        <tr><td>Fall 2021, Spring 2022, Summer 2022</td><td>FY22</td><td>9/1/2021 – 8/31/2022</td></tr>
+        <tr><td>Fall 2020, Spring 2021, Summer 2021</td><td>FY21</td><td>9/1/2020 – 8/31/2021</td></tr>
+        <tr><td>Fall 2019, Spring 2020, Summer 2020</td><td>FY20</td><td>9/1/2019 – 8/31/2020</td></tr>
+      </tbody>
+    </table>
+    <div class="t-box" style="margin-top:.75rem"><strong>Quick rule:</strong> Sep–Dec = Fall of that FY &nbsp;·&nbsp; Jan–May = Spring of that FY &nbsp;·&nbsp; Jun–Aug = Summer of that FY</div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Terminal Degree Qualifications</h2>
+    <div class="two-col">
+      <div>
+        <div class="lbl" style="color:var(--teal)">✅ Always qualifies as terminal</div>
+        <ul class="do-list">
+          <li>PhD (any field)</li>
+          <li>EdD — Doctor of Education</li>
+          <li>JD — Juris Doctor / Law</li>
+          <li>DNP — Doctor of Nursing Practice</li>
+          <li>MFA in qualifying studio arts (see right)</li>
+        </ul>
+      </div>
+      <div>
+        <div class="lbl" style="color:var(--teal)">✅ MFA qualifies ONLY in these fields</div>
+        <ul class="do-list">
+          <li>Sculpture, Writing, Dance, Design</li>
+          <li>Directing, Drama</li>
+          <li>Live Design & Production</li>
+          <li>Performance, Playwriting</li>
+          <li>Painting, Drawing</li>
+          <li>Photography & Media, Print, Transmedia</li>
+        </ul>
+      </div>
+    </div>
+    <div class="w-box"><strong>MFA in other fields (e.g. Poetry):</strong> Does NOT qualify as terminal. Use Master's or below rate.</div>
+  </div>
+
+  <div class="card">
+    <h2 class="section-title">Order of Operations — Critical Rules</h2>
+    <table class="ref-table">
+      <thead><tr><th>Last Taught</th><th>Order</th><th>6.25% Correction?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>FY24 or after</strong></td><td>Apply only missed raises</td><td style="color:var(--teal)">NO — never applies</td></tr>
+        <tr><td><strong>FY23</strong></td><td>6.25% correction FIRST, then FY24 raise if eligible</td><td style="color:var(--amber)">YES — apply first</td></tr>
+        <tr><td><strong>FY22 or earlier</strong></td><td>ONE raise FIRST (FY immediately after departure), then 6.25% correction</td><td style="color:var(--amber)">YES — apply second</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 </div><!-- /content -->
 </div><!-- /app -->
 
@@ -3011,6 +3357,330 @@ function flashCopied(btn) {
 
 // Alias for old-style copy calls in preserved pages
 function showCopied(btn) { flashCopied(btn); }
+
+// ─── LEH CALCULATOR ──────────────────────────────────────────────
+var LEH_FY_MAP = {
+  'Fall 2025':'FY26','Spring 2026':'FY26','Summer 2026':'FY26',
+  'Spring 2025':'FY25','Summer 2025':'FY25','Fall 2024':'FY25',
+  'Spring 2024':'FY24','Summer 2024':'FY24','Fall 2023':'FY24',
+  'Spring 2023':'FY23','Summer 2023':'FY23','Fall 2022':'FY23',
+  'Spring 2022':'FY22','Summer 2022':'FY22','Fall 2021':'FY22',
+  'Spring 2021':'FY21','Summer 2021':'FY21','Fall 2020':'FY21',
+  'Spring 2020':'FY20','Summer 2020':'FY20','Fall 2019':'FY20',
+  'Spring 2019':'FY19','Summer 2019':'FY19','Fall 2018':'FY19'
+};
+
+// Was teaching on/after 9/1 of a given FY?
+var LEH_ON_OR_AFTER_91 = {
+  'Fall 2025':true,'Fall 2024':true,'Fall 2023':true,'Fall 2022':true,
+  'Fall 2021':true,'Fall 2020':true,'Fall 2019':true,'Fall 2018':true,
+  'Spring 2026':false,'Spring 2025':false,'Spring 2024':false,'Spring 2023':false,
+  'Spring 2022':false,'Spring 2021':false,'Spring 2020':false,'Spring 2019':false,
+  'Summer 2026':false,'Summer 2025':false,'Summer 2024':false,'Summer 2023':false,
+  'Summer 2022':false,'Summer 2021':false,'Summer 2020':false,'Summer 2019':false
+};
+
+var LEH_STD = {
+  FY26:{masters:1435, terminal:1521},
+  FY25:{masters:1413, terminal:1500},
+  FY24:{masters:1371, terminal:1457}
+};
+
+var LEH_RAISES = {
+  FY26:{pct:0.03}, FY25:{pct:0.045},
+  FY24:{pct:0.06, flat:82}, FY23:{pct:0.05, flat:93},
+  FY22:{pct:0.04}, FY21:{pct:0.02}, FY20:{pct:0.03},
+  FY19:{pct:0.03}, FY18:{pct:0.05}, FY17:{pct:0.03}, FY16:{pct:0.03}
+};
+
+function applyRaise(rate, fy) {
+  var r = LEH_RAISES[fy];
+  if (!r) return rate;
+  var byPct = rate * (1 + r.pct);
+  if (r.flat !== undefined) {
+    var byFlat = rate + r.flat;
+    return Math.max(byPct, byFlat);
+  }
+  return byPct;
+}
+
+function roundUp(n) { return Math.ceil(n); }
+
+function fmt(n) { return '$' + n.toFixed(2); }
+
+document.getElementById('leh-degree').addEventListener('change', function() {
+  document.getElementById('mfa-field').style.display = this.value === 'mfa' ? 'block' : 'none';
+});
+
+function resetLEH() {
+  ['leh-semester','leh-got-raise','leh-degree','leh-mfa-qualify'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('leh-rate').value = '';
+  document.getElementById('leh-results').style.display = 'none';
+  document.getElementById('mfa-field').style.display = 'none';
+}
+
+function calcLEH() {
+  var semester = document.getElementById('leh-semester').value;
+  var priorRate = parseFloat(document.getElementById('leh-rate').value);
+  var gotRaise = document.getElementById('leh-got-raise').value;
+  var degree = document.getElementById('leh-degree').value;
+  var mfaQualify = document.getElementById('leh-mfa-qualify').value;
+
+  if (!semester || isNaN(priorRate) || !gotRaise || !degree) {
+    alert('Please fill in all required fields before calculating.');
+    return;
+  }
+  if (degree === 'mfa' && !mfaQualify) {
+    alert('Please indicate whether the MFA is in a qualifying studio arts field.');
+    return;
+  }
+
+  // Determine terminal
+  var isTerminal = ['phd','edd','jd','dnp'].indexOf(degree) > -1 ||
+                   (degree === 'mfa' && mfaQualify === 'yes');
+  var isPhD = degree === 'phd';
+  var degLabel = isTerminal ? 'PhD/Terminal Degree' : "Master\'s or below";
+  var stdFY26 = isTerminal ? 1521 : 1435;
+
+  var lastFY = LEH_FY_MAP[semester] || 'FY18-or-earlier';
+  var onAfter91 = LEH_ON_OR_AFTER_91[semester] || false;
+
+  var steps = [];
+  var reasoning = [];
+  var rate = priorRate;
+  var path = '';
+
+  // Helper to add a step
+  function addStep(label, calc, result) {
+    steps.push('<div class="step-row"><div class="step-circle">' + (steps.length+1) + '</div><div><strong>' + label + '</strong><br><span style="font-family:var(--mono);font-size:12px;color:var(--ink-3)">' + calc + '</span><br><span style="font-size:13px;color:var(--teal);font-weight:600">' + result + '</span></div></div>');
+  }
+
+  // Compare to std and take higher
+  function vsStd(currentRate, fy, terminal) {
+    var std = LEH_STD[fy];
+    if (!std) return currentRate;
+    var stdRate = terminal ? std.terminal : std.masters;
+    if (currentRate < stdRate) {
+      steps.push('<div class="i-box" style="font-size:12.5px">↑ Rate after raise (' + fmt(currentRate) + ') is below the ' + fy + ' standard rate (' + fmt(stdRate) + ') — using standard rate instead.</div>');
+      return stdRate;
+    }
+    return currentRate;
+  }
+
+  // PATH A: FY26 — already teaching in FY26
+  if (lastFY === 'FY26') {
+    path = 'PATH A — Continuous Service (FY26)';
+    addStep('Starting rate', 'Prior rate from FY26', fmt(rate));
+    if (onAfter91) {
+      addStep('FY26 raise status', 'Teaching after 9/1/2025 → assume FY26 raise already received', 'No additional raise needed');
+      reasoning.push('This adjunct was actively teaching after 9/1/2025 (Fall 2025), so we assume they already received the FY26 annual increase. Their current rate of ' + fmt(rate) + ' already includes the 3% raise.');
+    } else {
+      if (gotRaise === 'yes') {
+        addStep('FY26 raise status', 'Wage record confirms 9/1/2025 increase received', 'No additional raise needed');
+        reasoning.push('Wage record confirms the adjunct received the FY26 annual increase on 9/1/2025. Their current rate already includes this raise.');
+      } else {
+        var raised = applyRaise(rate, 'FY26');
+        addStep('Apply FY26 raise (3%)', fmt(rate) + ' × 1.03', fmt(raised));
+        rate = raised;
+        reasoning.push('The adjunct did not receive the FY26 raise on 9/1/2025, so we applied the 3% increase: ' + fmt(priorRate) + ' × 1.03 = ' + fmt(rate));
+      }
+    }
+    reasoning.push('No 6.25% correction applies — last taught in FY24 or after.');
+  }
+
+  // PATH A2: FY25 — one year back
+  else if (lastFY === 'FY25') {
+    path = 'PATH A — Continuous Service (FY25)';
+    addStep('Starting rate', 'Prior rate from FY25', fmt(rate));
+
+    // FY25 raise — if teaching Fall 2024, assumed received
+    if (onAfter91) {
+      addStep('FY25 raise status', 'Teaching after 9/1/2024 (Fall 2024) → FY25 raise assumed received', 'FY25 raise already included');
+      reasoning.push('The adjunct was teaching during Fall 2024 (on/after 9/1/2024), so we assume they received the FY25 raise. Their prior rate already includes this.');
+    } else {
+      // Spring/Summer 2025 — they were in FY25 but after 9/1/2024, assume received
+      addStep('FY25 raise status', 'Teaching in FY25 (Spring/Summer 2025) — assume FY25 raise received', 'FY25 raise already included');
+      reasoning.push('The adjunct was teaching in FY25 (Spring/Summer 2025). Since they were in FY25, we assume they received the FY25 raise.');
+    }
+
+    // Check FY26 eligibility
+    if (gotRaise === 'yes') {
+      addStep('FY26 raise check', 'Wage record shows 9/1/2025 increase received', 'FY26 raise already included — no additional raise');
+      reasoning.push('Wage record confirms the FY26 raise was received on 9/1/2025. Current rate is ' + fmt(rate) + '.');
+    } else if (gotRaise === 'no') {
+      var raised26 = applyRaise(rate, 'FY26');
+      addStep('Apply FY26 raise (3%)', fmt(rate) + ' × 1.03', fmt(raised26));
+      rate = raised26;
+      reasoning.push('The adjunct did not receive the FY26 raise on 9/1/2025, so we applied 3%: ' + fmt(priorRate) + ' × 1.03 = ' + fmt(rate));
+    } else {
+      steps.push('<div class="alert warn" style="font-size:12.5px"><div class="alert-icon">⚠️</div><div><strong>Wage record unsure for FY26 raise.</strong> Check the wage record for a 9/1/2025 increase before proceeding.</div></div>');
+      reasoning.push('FY26 raise status is unsure. Wage record must be checked before finalising.');
+    }
+    reasoning.push('No 6.25% correction applies — last taught in FY24 or after.');
+  }
+
+  // PATH B: FY24 — one-year break
+  else if (lastFY === 'FY24') {
+    path = 'PATH B — One-Year Break (last taught FY24)';
+    addStep('Starting rate', 'Prior rate from FY24', fmt(rate));
+
+    if (onAfter91) {
+      addStep('FY24 raise status', 'Teaching after 9/1/2023 (Fall 2023) → FY24 raise assumed received', 'FY24 raise included');
+      reasoning.push('Teaching during Fall 2023 (on/after 9/1/2023) — assume FY24 raise received.');
+    } else {
+      addStep('FY24 raise status', 'Spring/Summer 2024 — in FY24, assume FY24 raise received', 'FY24 raise included');
+      reasoning.push('Teaching in FY24 (Spring/Summer 2024) — assume FY24 raise received.');
+    }
+
+    // FY25 eligibility
+    if (gotRaise === 'yes') {
+      addStep('FY25 raise check', 'Wage record: 9/1/2024 increase received', 'FY25 raise already included');
+      reasoning.push('FY25 raise confirmed received on 9/1/2024 via wage record.');
+    } else if (gotRaise === 'no') {
+      var raised25 = applyRaise(rate, 'FY25');
+      addStep('Apply FY25 raise (4.5%)', fmt(rate) + ' × 1.045', fmt(raised25));
+      rate = raised25;
+      rate = vsStd(rate, 'FY25', isTerminal);
+      reasoning.push('FY25 raise not received — applied 4.5%: result ' + fmt(rate));
+    } else {
+      steps.push('<div class="alert warn" style="font-size:12.5px"><div class="alert-icon">⚠️</div><div>Check wage record for 9/1/2024 FY25 increase before proceeding.</div></div>');
+    }
+
+    addStep('FY26 eligibility', 'One-year break in service — NOT eligible for FY26 raise', 'FY26 raise does not apply');
+    reasoning.push('Not eligible for FY26 raise due to one-year break in service. No 6.25% correction — last taught FY24 or after.');
+  }
+
+  // PATH C: FY23 — two-year break
+  else if (lastFY === 'FY23') {
+    path = 'PATH C — Two-Year Break (last taught FY23)';
+    addStep('Starting rate', 'Prior rate from FY23', fmt(rate));
+    reasoning.push('Last taught in FY23. Order of operations: apply 6.25% correction FIRST, then FY24 raise if eligible.');
+
+    // 6.25% correction FIRST
+    var corrected = rate * 1.0625;
+    addStep('Apply 6.25% correction (FY23 order — FIRST)', fmt(rate) + ' × 1.0625', fmt(corrected));
+    rate = corrected;
+    reasoning.push('Applied 6.25% correction first: ' + fmt(priorRate) + ' × 1.0625 = ' + fmt(rate));
+
+    // FY24 raise
+    if (gotRaise === 'yes') {
+      addStep('FY24 raise check', 'Wage record: 9/1/2023 increase received', 'FY24 raise already included');
+      reasoning.push('FY24 raise confirmed received on 9/1/2023 — not applied again.');
+    } else if (gotRaise === 'no') {
+      var r24pct = rate * 1.06;
+      var r24flat = rate + 82;
+      var raised24 = Math.max(r24pct, r24flat);
+      var method24 = r24pct >= r24flat ? '6%' : '+$82';
+      addStep('Apply FY24 raise (higher of 6% or +$82)', '6%: ' + fmt(r24pct) + ' | +$82: ' + fmt(r24flat) + ' → use ' + method24, fmt(raised24));
+      rate = raised24;
+      rate = vsStd(rate, 'FY24', isTerminal);
+      reasoning.push('FY24 raise applied (higher of 6% or $82, method: ' + method24 + '): result ' + fmt(rate));
+    } else {
+      steps.push('<div class="alert warn" style="font-size:12.5px"><div class="alert-icon">⚠️</div><div>Check wage record for 9/1/2023 FY24 increase.</div></div>');
+    }
+    reasoning.push('Not eligible for FY25 or FY26 raises — two-year break.');
+  }
+
+  // PATH D: FY22 or earlier
+  else {
+    path = 'PATH D — Long-Term Break (FY22 or earlier)';
+    var fyNum = parseInt(lastFY.replace('FY','')) || 22;
+    var nextFY = 'FY' + (fyNum + 1);
+
+    addStep('Starting rate', 'Prior rate from ' + lastFY, fmt(rate));
+    reasoning.push('Last taught in ' + lastFY + '. Order: apply ONE raise FIRST (for ' + nextFY + '), then 6.25% correction.');
+
+    // Apply ONE raise first (immediately following FY)
+    if (gotRaise === 'no' && LEH_RAISES[nextFY]) {
+      var r = LEH_RAISES[nextFY];
+      var byPct2 = rate * (1 + r.pct);
+      var label2 = nextFY + ' raise (' + (r.pct*100) + '%)';
+      var result2 = fmt(byPct2);
+      if (r.flat !== undefined) {
+        var byFlat2 = rate + r.flat;
+        var method2 = byPct2 >= byFlat2 ? (r.pct*100) + '%' : '+$' + r.flat;
+        result2 = 'higher of ' + fmt(byPct2) + ' or ' + fmt(byFlat2) + ' = ' + fmt(Math.max(byPct2, byFlat2));
+        byPct2 = Math.max(byPct2, byFlat2);
+        label2 = nextFY + ' raise (higher of ' + (r.pct*100) + '% or +$' + r.flat + ')';
+      }
+      addStep('Apply ' + label2 + ' FIRST', fmt(rate) + ' → ' + result2, fmt(byPct2));
+      rate = byPct2;
+      reasoning.push('Applied ' + nextFY + ' raise first: result ' + fmt(rate));
+    } else if (gotRaise === 'yes') {
+      addStep(nextFY + ' raise status', 'Wage record: raise received — prior rate already includes it', 'No additional raise');
+      reasoning.push(nextFY + ' raise already received — not applied again.');
+    } else {
+      steps.push('<div class="alert warn" style="font-size:12.5px"><div class="alert-icon">⚠️</div><div>Check wage record for the 9/1 increase after they stopped teaching.</div></div>');
+    }
+
+    // 6.25% correction SECOND
+    var correctedD = rate * 1.0625;
+    addStep('Apply 6.25% correction SECOND', fmt(rate) + ' × 1.0625', fmt(correctedD));
+    rate = correctedD;
+    reasoning.push('Applied 6.25% correction second: result ' + fmt(rate));
+  }
+
+  // Compare to FY26 standard
+  var finalRate = Math.max(rate, stdFY26);
+  if (rate < stdFY26) {
+    addStep('Compare to FY26 standard rate (' + degLabel + ')', 'Calculated ' + fmt(rate) + ' < standard ' + fmt(stdFY26) + ' → use standard', fmt(stdFY26));
+    reasoning.push('Calculated rate ' + fmt(rate) + ' is below FY26 standard of ' + fmt(stdFY26) + ' — using standard rate.');
+  } else {
+    addStep('Compare to FY26 standard rate (' + degLabel + ')', 'Calculated ' + fmt(rate) + ' ≥ standard ' + fmt(stdFY26) + ' → use calculated', fmt(rate));
+    reasoning.push('Calculated rate ' + fmt(rate) + ' exceeds FY26 standard — calculated rate applies.');
+  }
+
+  // PhD check
+  if (finalRate < 1521) {
+    if (isPhD) {
+      addStep('PhD rate check', 'Rate ' + fmt(finalRate) + ' < PhD minimum $1,521 — has PhD → use $1,521', '$1,521');
+      finalRate = 1521;
+      reasoning.push('Rate was below PhD minimum of $1,521 — applied PhD floor.');
+    } else {
+      addStep('PhD rate check', 'Rate ' + fmt(finalRate) + ' < $1,521 — verify no PhD on file', 'No PhD confirmed — rate stands');
+      reasoning.push('Rate is below PhD rate of $1,521. Credentials confirmed: no PhD — rate stands.');
+    }
+  } else {
+    addStep('PhD rate check', 'Rate ' + fmt(finalRate) + ' ≥ PhD minimum $1,521 — no adjustment needed', 'Passes');
+  }
+
+  // Round up
+  var rounded = roundUp(finalRate);
+  if (finalRate !== rounded) {
+    addStep('Round UP to nearest whole dollar', fmt(finalRate) + ' → round up', '$' + rounded);
+    reasoning.push('Rounded up to nearest whole dollar: ' + fmt(finalRate) + ' → $' + rounded);
+  } else {
+    addStep('Rounding', 'No cents — no rounding needed', '$' + rounded);
+  }
+
+  // Show results
+  document.getElementById('leh-final-rate').textContent = '$' + rounded.toLocaleString();
+  document.getElementById('leh-path-badge').className = 'risk-badge risk-medium';
+  document.getElementById('leh-path-badge').textContent = path;
+  document.getElementById('leh-steps').innerHTML = steps.join('');
+  document.getElementById('leh-reasoning').innerHTML =
+    '<p>' + reasoning.join('</p><p>') + '</p>' +
+    '<div class="success-box" style="margin-top:.75rem"><strong>FINAL FY26 LEH RATE: $' + rounded.toLocaleString() + '</strong><br>Degree: ' + degLabel + ' | Path: ' + path + '</div>';
+
+  // Update AI prompt
+  var semVal = document.getElementById('leh-semester').value;
+  var degVal = document.getElementById('leh-degree').value.toUpperCase();
+  document.getElementById('leh-prompt-box').childNodes[0].nodeValue =
+    document.getElementById('leh-prompt-box').childNodes[0].nodeValue
+    .replace('[SEMESTER]', semVal)
+    .replace('[FY]', LEH_FY_MAP[semVal] || 'FY')
+    .replace('[RATE]', priorRate.toFixed(2))
+    .replace('[YES/NO/UNSURE]', gotRaise.toUpperCase())
+    .replace('[DEGREE]', degVal)
+    .replace('[YES/NO]', isTerminal ? 'YES' : 'NO')
+    .replace('[YOUR RESULT]', rounded.toLocaleString());
+
+  document.getElementById('leh-results').style.display = 'block';
+  document.getElementById('leh-results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
 </script>
 </body>
 </html>
