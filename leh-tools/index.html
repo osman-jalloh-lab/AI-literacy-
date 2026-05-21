@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEH Tools — FY26 Calculator & Auditor</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --teal: #0D9488;
+      --teal-l: #F0FDFA;
+      --teal-m: #99F6E4;
+      --coral: #EF4444;
+      --coral-l: #FEE2E2;
+      --amber: #F59E0B;
+      --amber-l: #FEF3C7;
+      --ink: #1F2937;
+      --ink-1: #F3F4F6;
+      --ink-2: #E5E7EB;
+      --ink-3: #9CA3AF;
+      --ink-4: #6B7280;
+      --r-md: 0.5rem;
+      --mono: 'Monaco','Courier New',monospace;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--ink-1);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    header {
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--ink-4);
+    }
+    .alert {
+      background: var(--teal-l);
+      border: 1px solid var(--teal-m);
+      border-radius: var(--r-md);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .alert-icon { font-size: 1.25rem; }
+    .card {
+      background: white;
+      border: 1px solid var(--ink-2);
+      border-radius: var(--r-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.65rem;
+      border: 1px solid var(--ink-2);
+      border-radius: var(--r-md);
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px var(--teal-l);
+    }
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border: none;
+      border-radius: var(--r-md);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0d8176;
+    }
+    .btn-secondary {
+      background: var(--ink-1);
+      color: var(--ink);
+      border: 1px solid var(--ink-2);
+    }
+    .btn-secondary:hover {
+      background: var(--ink-2);
+    }
+    .btn-group {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .result-box {
+      background: var(--teal-l);
+      border: 2px solid var(--teal);
+      border-radius: var(--r-md);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+    .result-box.show {
+      display: block;
+    }
+    .result-rate {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .result-label {
+      font-size: 0.85rem;
+      color: var(--ink-4);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+    .steps {
+      background: white;
+      border: 1px solid var(--ink-2);
+      border-radius: var(--r-md);
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--ink-1);
+    }
+    .step:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .step-num {
+      min-width: 32px;
+      width: 32px;
+      height: 32px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .step-content strong {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .step-math {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--ink-3);
+      margin: 0.25rem 0;
+    }
+    .step-result {
+      color: var(--teal);
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .error-box {
+      background: var(--coral-l);
+      border: 1px solid var(--coral);
+      border-radius: var(--r-md);
+      padding: 1rem;
+      color: var(--coral);
+      margin-top: 1rem;
+    }
+    .warning-box {
+      background: var(--amber-l);
+      border: 1px solid var(--amber);
+      border-radius: var(--r-md);
+      padding: 1rem;
+      color: var(--amber);
+      margin-top: 1rem;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--ink-4);
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--ink-2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 LEH Tools</h1>
+      <p class="subtitle">FY26 LEH Rate Calculator for Rehired Adjunct Faculty</p>
+    </header>
+
+    <div class="alert">
+      <div class="alert-icon">ℹ️</div>
+      <div>This tool calculates the correct FY26 LEH rate for rehired adjunct faculty based on prior rate, degree level, break in service, and 9/1 raise eligibility.</div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom: 1.5rem; font-size: 1.3rem;">Employee Information</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+        <div class="form-group">
+          <label>Last taught at ACC</label>
+          <select id="semester">
+            <option value="">— Select semester —</option>
+            <option value="Fall 2025">Fall 2025 (FY26)</option>
+            <option value="Spring 2026">Spring 2026 (FY26)</option>
+            <option value="Summer 2026">Summer 2026 (FY26)</option>
+            <option value="Fall 2024">Fall 2024 (FY25)</option>
+            <option value="Spring 2025">Spring 2025 (FY25)</option>
+            <option value="Summer 2025">Summer 2025 (FY25)</option>
+            <option value="Fall 2023">Fall 2023 (FY24)</option>
+            <option value="Spring 2024">Spring 2024 (FY24)</option>
+            <option value="Summer 2024">Summer 2024 (FY24)</option>
+            <option value="Fall 2022">Fall 2022 (FY23)</option>
+            <option value="Spring 2023">Spring 2023 (FY23)</option>
+            <option value="Summer 2023">Summer 2023 (FY23)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Prior LEH rate ($)</label>
+          <input id="rate" type="number" step="0.01" min="0" placeholder="e.g. 1360.00">
+        </div>
+
+        <div class="form-group">
+          <label>Highest degree</label>
+          <select id="degree">
+            <option value="">— Select —</option>
+            <option value="phd">PhD</option>
+            <option value="terminal">EdD / JD / DNP</option>
+            <option value="mfa-yes">MFA (studio arts)</option>
+            <option value="mfa-no">MFA (other)</option>
+            <option value="masters">Master's</option>
+            <option value="bachelors">Bachelor's</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>9/1 raise received?</label>
+          <select id="raise">
+            <option value="">— Select —</option>
+            <option value="yes">YES</option>
+            <option value="no">NO</option>
+            <option value="unsure">UNSURE</option>
+            <option value="assumed">ASSUMED (was teaching at 9/1)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="calculate()">⚡ Calculate FY26 Rate</button>
+        <button class="btn btn-secondary" onclick="reset()">Reset</button>
+        <button class="btn btn-secondary" onclick="loadSample()">🧪 Load Sample</button>
+      </div>
+    </div>
+
+    <div id="results" class="result-box">
+      <div class="result-label" id="status">Final FY26 LEH Rate</div>
+      <div class="result-rate" id="finalRate">$1,435</div>
+      
+      <div id="stepsContainer" class="steps" style="display: none;">
+        <h3 style="margin-bottom: 1rem; font-size: 1.05rem;">Step-by-Step Calculation</h3>
+        <div id="steps"></div>
+      </div>
+
+      <div id="errorBox" class="error-box" style="display: none;"></div>
+      <div id="warningBox" class="warning-box" style="display: none;"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>LEH Tools v1.0 — Standalone Calculator | <a href="../" style="color: var(--teal); text-decoration: none;">← Back to HR AI Companion</a></p>
+  </footer>
+
+  <script>
+    var FY_MAP = {
+      "Fall 2025":"FY26","Spring 2026":"FY26","Summer 2026":"FY26",
+      "Spring 2025":"FY25","Summer 2025":"FY25","Fall 2024":"FY25",
+      "Spring 2024":"FY24","Summer 2024":"FY24","Fall 2023":"FY24",
+      "Spring 2023":"FY23","Summer 2023":"FY23","Fall 2022":"FY23"
+    };
+
+    var STD_RATES = {
+      FY26: {yes: 1521, no: 1435},
+      FY25: {yes: 1500, no: 1413},
+      FY24: {yes: 1457, no: 1371},
+      FY23: {yes: 1391, no: 1306}
+    };
+
+    var RAISES = {
+      FY26: 0.03,
+      FY25: 0.045,
+      FY24: {pct: 0.06, flat: 82},
+      FY23: {pct: 0.05, flat: 93},
+      FY22: 0.04
+    };
+
+    function isTerminal(deg) {
+      return ["phd", "terminal", "mfa-yes"].indexOf(deg) > -1;
+    }
+
+    function fmt(n) { return "$" + n.toFixed(2); }
+    function roundUp(n) { return Math.ceil(n); }
+
+    function calculate() {
+      var semester = document.getElementById("semester").value;
+      var rate = parseFloat(document.getElementById("rate").value);
+      var degree = document.getElementById("degree").value;
+      var raise = document.getElementById("raise").value;
+
+      var errors = [];
+      if (!semester) errors.push("Last taught semester");
+      if (isNaN(rate) || rate <= 0) errors.push("Valid prior LEH rate (> 0)");
+      if (!degree) errors.push("Highest degree");
+      if (!raise) errors.push("9/1 raise status");
+
+      if (errors.length > 0) {
+        showError("Missing required fields: " + errors.join(", "));
+        return;
+      }
+
+      var fy = FY_MAP[semester];
+      var terminal = isTerminal(degree);
+      var steps = [];
+      var current = rate;
+
+      function addStep(label, math, result) {
+        steps.push({label, math, result});
+      }
+
+      addStep("Starting rate", "Prior rate from " + fy, fmt(rate));
+
+      // Logic
+      if (fy === "FY26" || fy === "FY25") {
+        if (raise === "no") {
+          var newRate = current * 1.03;
+          addStep("Apply FY26 raise", fmt(current) + " × 1.03", fmt(newRate));
+          current = newRate;
+        } else {
+          addStep("9/1 raise status", "Already received", "Included in prior rate");
+        }
+      } else if (fy === "FY24") {
+        if (raise === "no") {
+          var newRate = current * 1.045;
+          addStep("Apply FY25 raise", fmt(current) + " × 1.045", fmt(newRate));
+          current = newRate;
+        }
+      } else if (fy === "FY23") {
+        var corrected = current * 1.0625;
+        addStep("Apply 6.25% correction", fmt(current) + " × 1.0625", fmt(corrected));
+        current = corrected;
+
+        if (raise === "no") {
+          var byPct = current * 1.06;
+          var byFlat = current + 82;
+          var newRate = Math.max(byPct, byFlat);
+          addStep("Apply FY24 raise (higher of 6% or +$82)", fmt(byPct) + " vs " + fmt(byFlat), fmt(newRate));
+          current = newRate;
+        }
+      }
+
+      // Compare to standard
+      var stdRate = STD_RATES[fy] ? (terminal ? STD_RATES[fy].yes : STD_RATES[fy].no) : 1435;
+      var afterStd = Math.max(current, stdRate);
+      if (current < stdRate) {
+        addStep("Compare to " + fy + " standard", fmt(current) + " < " + fmt(stdRate), fmt(stdRate));
+      }
+      current = afterStd;
+
+      // FY26 final
+      var fy26Std = terminal ? 1521 : 1435;
+      var final = Math.max(current, fy26Std);
+      if (current < fy26Std) {
+        addStep("Compare to FY26 standard", fmt(current) + " < " + fmt(fy26Std), fmt(fy26Std));
+      }
+      current = final;
+
+      // Round
+      var rounded = roundUp(current);
+      addStep("Round UP to whole dollar", fmt(current), "$" + rounded);
+
+      // Show
+      showResults(rounded, steps, terminal, semester, fy);
+    }
+
+    function showResults(finalRate, steps, isTerminal, semester, fy) {
+      document.getElementById("finalRate").textContent = "$" + finalRate.toLocaleString();
+      
+      var stepsHtml = "";
+      steps.forEach(function(s, i) {
+        stepsHtml += '<div class="step">';
+        stepsHtml += '<div class="step-num">' + (i + 1) + '</div>';
+        stepsHtml += '<div class="step-content">';
+        stepsHtml += '<strong>' + s.label + '</strong>';
+        stepsHtml += '<div class="step-math">' + s.math + '</div>';
+        stepsHtml += '<div class="step-result">' + s.result + '</div>';
+        stepsHtml += '</div></div>';
+      });
+      document.getElementById("steps").innerHTML = stepsHtml;
+      document.getElementById("stepsContainer").style.display = "block";
+      document.getElementById("errorBox").style.display = "none";
+      document.getElementById("warningBox").style.display = "none";
+      document.getElementById("results").classList.add("show");
+      document.getElementById("results").scrollIntoView({behavior: "smooth"});
+    }
+
+    function showError(msg) {
+      document.getElementById("errorBox").textContent = "❌ " + msg;
+      document.getElementById("errorBox").style.display = "block";
+      document.getElementById("warningBox").style.display = "none";
+      document.getElementById("stepsContainer").style.display = "none";
+      document.getElementById("results").classList.add("show");
+    }
+
+    function reset() {
+      document.getElementById("semester").value = "";
+      document.getElementById("rate").value = "";
+      document.getElementById("degree").value = "";
+      document.getElementById("raise").value = "";
+      document.getElementById("results").classList.remove("show");
+    }
+
+    function loadSample() {
+      document.getElementById("semester").value = "Spring 2024";
+      document.getElementById("rate").value = "1360";
+      document.getElementById("degree").value = "masters";
+      document.getElementById("raise").value = "no";
+      setTimeout(calculate, 200);
+    }
+  </script>
+</body>
+</html>
