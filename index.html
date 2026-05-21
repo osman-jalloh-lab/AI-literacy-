@@ -299,9 +299,7 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
   <div class="nav-section">Deliverables</div>
   <button class="nav-item" onclick="showPage('deliverables',this)"><div class="nav-dot" style="background:#185FA5"></div>AI Deliverables<div class="nav-badge">New</div></button>
   <div class="nav-section">Community College</div>
-  <button class="nav-item" onclick="showPage('leh',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Rate Calculator<div class="nav-badge">New</div></button>
-  <button class="nav-item" onclick="showPage('leh-ref',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Reference Tables</button>
-  <button class="nav-item" onclick="showPage('leh-track',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Track + Auditor<div class="nav-badge">New</div></button>
+  <button class="nav-item" onclick="showPage('lehTools',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Tools</button>
   <div class="nav-section">Work Authorization / EAD</div>
   <button class="nav-item" onclick="showPage('ead-responses',this)"><div class="nav-dot" style="background:#534AB7"></div>EAD Response Prompts</button>
   <button class="nav-item" onclick="showPage('ead-expired',this)"><div class="nav-dot" style="background:#993C1D"></div>Expired EAD Handling</button>
@@ -384,15 +382,11 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
       <div class="hc-sub">PowerPoints, Excel analysis, SOPs, and modern HR documents with AI</div>
       <div class="hc-tag tag-blue">New</div>
     </div>
-        <div class="home-card c-blue" onclick="showPage('leh-track',this)">
-      <div class="hc-icon">🔍</div>
-      <div class="hc-title">LEH Track + Auditor</div>
+        <div class="hc-title">LEH Track + Auditor</div>
       <div class="hc-sub">Calculate FY26 LEH rate with independent audit verification</div>
       <div class="hc-tag tag-blue">New</div>
     </div>
-    <div class="home-card c-blue" onclick="showPage('leh',this)">
-      <div class="hc-icon">🧮</div>
-      <div class="hc-title">LEH Rate Calculator</div>
+    <div class="hc-title">LEH Rate Calculator</div>
       <div class="hc-sub">Calculate the correct FY26 LEH pay rate for rehired adjunct faculty</div>
       <div class="hc-tag tag-blue">New</div>
     </div>
@@ -3167,10 +3161,10 @@ Please verify this calculation step by step, show all math, and confirm or corre
      FY26 LEH TRACK CALCULATOR + AUDITOR (added section — unique IDs)
      All IDs use prefix "lehtrack-" to avoid collision with existing calculator
 ═══════════════════════════════════════════════════════════════════════ -->
-<div class="page" id="page-leh-track">
+<div class="page" id="page-lehTools">
   <div class="page-eyebrow ey-blue">Interactive Tool</div>
-  <h1 class="page-title">FY26 LEH Track Calculator + Auditor</h1>
-  <p class="page-sub">Calculate the correct FY26 LEH rate for a rehired adjunct, then run an independent audit to verify the result. Includes a sample test case for quick validation.</p>
+  <h1 class="page-title">LEH Tools</h1>
+  <p class="page-sub">FY26 LEH rate calculator with independent auditor, reference tables, and test cases for rehired adjunct faculty.</p>
 
   <div class="alert info">
     <div class="alert-icon">💡</div>
