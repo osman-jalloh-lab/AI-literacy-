@@ -9,7 +9,7 @@ The repository name is `AI-literacy-`, but the product surfaced by the root site
 - `index.html` - Main static app. Includes AI literacy guidance, prompt builder, HR workflow prompts, department email templates, EAD/work authorization prompts, deliverables guidance, and the integrated FY26 LEH rate calculator.
 - `leh-tools/index.html` - Standalone FY26 LEH calculator kept for direct use or separate sharing.
 - `leh-tools/README.md` - Notes for the standalone LEH tool.
-- `.github/workflows/pages.yml` - GitHub Actions workflow for publishing the static site to GitHub Pages.
+- `.nojekyll` - Keeps GitHub Pages from running Jekyll processing.
 
 ## Current architecture
 
@@ -54,12 +54,13 @@ Expected Pages URL after deployment:
 https://osman-jalloh-lab.github.io/AI-literacy-/
 ```
 
-Deployment workflow:
+Deployment setup:
 
 1. Push changes to `main`.
 2. In GitHub, open repository **Settings > Pages**.
-3. Set **Source** to **GitHub Actions** if it is not already selected.
-4. The `Deploy static site to GitHub Pages` workflow will publish the root site.
+3. Set **Source** to **Deploy from a branch**.
+4. Set the branch to `main` and the folder to `/ (root)`.
+5. GitHub Pages will publish `index.html` automatically after changes land on `main`.
 
 ## Safety disclaimer
 
@@ -71,5 +72,5 @@ Never paste real employee names, Social Security numbers, medical information, i
 
 - Static prototype only; no real AI model integration yet.
 - No automated test suite yet.
-- No analytics, error logging, or release automation beyond GitHub Pages deployment.
+- No analytics, error logging, or release automation beyond branch-based GitHub Pages deployment.
 - Accessibility can be improved with landmarks, ARIA states, and reduced reliance on inline click handlers.
