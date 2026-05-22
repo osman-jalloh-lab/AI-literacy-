@@ -1,0 +1,15 @@
+{
+  "name": "hr-ai-companion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static HR AI Companion with Express-backed HR tools.",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "dev": "node backend/src/server.js",
+    "test": "node --test backend/src/tests/*.test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

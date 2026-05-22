@@ -269,6 +269,27 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
 
 
 .gen-badge{font-size:11px;font-weight:600;background:var(--purple-l);color:var(--purple-d);padding:2px 10px;border-radius:99px}
+.tool-note{font-size:12.5px;color:var(--ink-3);line-height:1.6}
+.status-pill{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:4px 11px;font-size:11px;font-weight:700;letter-spacing:.03em}
+.status-pass{background:var(--green-l);color:var(--green)}
+.status-review{background:var(--amber-l);color:var(--amber)}
+.status-escalate{background:var(--red-l);color:var(--red)}
+.status-info{background:var(--blue-l);color:var(--blue)}
+.sp-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:.75rem 0 1rem}
+.sp-results-list{display:grid;gap:8px;margin-top:.8rem}
+.sp-result-row{border:1px solid var(--border);border-radius:var(--r-md);background:var(--white);padding:.75rem .9rem;display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.sp-result-title{font-size:13px;font-weight:600;color:var(--ink)}
+.sp-result-meta{font-size:12px;color:var(--ink-3);line-height:1.5;margin-top:2px}
+.sp-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin:.8rem 0}
+.sp-kpi-box{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-md);padding:.75rem .9rem}
+.sp-kpi-label{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-4);margin-bottom:.25rem}
+.sp-kpi-value{font-size:15px;font-weight:700;color:var(--ink)}
+.sp-step-list{list-style:none;display:grid;gap:6px;margin:.75rem 0}
+.sp-step-list li{font-family:var(--mono);font-size:12px;line-height:1.6;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:.55rem .7rem}
+.sp-check-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.sp-check-table th,.sp-check-table td{padding:8px 10px;border-bottom:1px solid var(--surface-3);text-align:left;vertical-align:top}
+.sp-check-table th{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);background:var(--surface-2)}
+.sp-copy-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:.75rem}
 </style>
 </head>
 <body>
@@ -298,9 +319,10 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
 
   <div class="nav-section">Deliverables</div>
   <button class="nav-item" onclick="showPage('deliverables',this)"><div class="nav-dot" style="background:#185FA5"></div>AI Deliverables<div class="nav-badge">New</div></button>
-  <div class="nav-section">Community College</div>
+  <div class="nav-section">Compensation Tools</div>
   <button class="nav-item" onclick="showPage('leh',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Rate Calculator<div class="nav-badge">New</div></button>
   <button class="nav-item" onclick="showPage('leh-ref',this)"><div class="nav-dot" style="background:#185FA5"></div>LEH Reference Tables</button>
+  <button class="nav-item" onclick="showPage('salary-placement',this)"><div class="nav-dot" style="background:#0F6E56"></div>Staff Salary Placement QA<div class="nav-badge">New</div></button>
   <div class="nav-section">Work Authorization / EAD</div>
   <button class="nav-item" onclick="showPage('ead-responses',this)"><div class="nav-dot" style="background:#534AB7"></div>EAD Response Prompts</button>
   <button class="nav-item" onclick="showPage('ead-expired',this)"><div class="nav-dot" style="background:#993C1D"></div>Expired EAD Handling</button>
@@ -388,6 +410,12 @@ h2.section-title-sm{font-size:15px;font-weight:600;margin-bottom:.6rem}
       <div class="hc-title">LEH Rate Calculator</div>
       <div class="hc-sub">Calculate the correct FY26 LEH pay rate for rehired adjunct faculty</div>
       <div class="hc-tag tag-blue">New</div>
+    </div>
+    <div class="home-card c-teal" onclick="showPage('salary-placement',this)">
+      <div class="hc-icon">QA</div>
+      <div class="hc-title">Staff Salary Placement QA</div>
+      <div class="hc-sub">Check position mapping, min-to-mid placement, exceptions, and req language</div>
+      <div class="hc-tag tag-teal">Comp tools</div>
     </div>
     <div class="home-card c-green" onclick="showPage('gov',this)">
       <div class="hc-icon">🏛️</div>
@@ -3155,6 +3183,146 @@ Please verify this calculation step by step, show all math, and confirm or corre
   </div>
 </div>
 
+
+<div class="page" id="page-salary-placement">
+  <div class="page-eyebrow ey-teal">Compensation Tools</div>
+  <h1 class="page-title">Staff Salary Placement QA</h1>
+  <p class="page-sub">Use backend salary placement rules to look up mapped positions, estimate min-to-mid salary placement, check exception areas, generate req text, and produce a QA decision.</p>
+
+  <div class="tabs" id="sp-tabs">
+    <button class="tab-btn active" onclick="switchTab('sp','lookup',this)">Position Lookup</button>
+    <button class="tab-btn" onclick="switchTab('sp','estimator',this)">Salary Placement Estimator</button>
+    <button class="tab-btn" onclick="switchTab('sp','exception',this)">Exception Checker</button>
+    <button class="tab-btn" onclick="switchTab('sp','req',this)">Req Text Generator</button>
+    <button class="tab-btn" onclick="switchTab('sp','audit',this)">QA / Audit Result</button>
+    <button class="tab-btn" onclick="switchTab('sp','reference',this)">Reference Tables</button>
+  </div>
+
+  <div id="sp-api-status" class="alert info">
+    <div class="alert-icon">i</div>
+    <div><strong>Backend required:</strong> run <code>npm install</code> once, then <code>npm start</code>. This tab uses the separate salary placement API and does not share LEH calculator logic.</div>
+  </div>
+
+  <div class="tab-panel active" id="sp-lookup">
+    <div class="card">
+      <h2 class="section-title">1. Position Lookup</h2>
+      <div class="builder-grid">
+        <div class="form-group full">
+          <label for="sp-position-query">Position title</label>
+          <input id="sp-position-query" type="text" placeholder="Search by mapped position title">
+        </div>
+      </div>
+      <div class="sp-toolbar">
+        <button class="btn-primary" type="button" id="sp-search-btn">Search Positions</button>
+        <button class="btn-secondary" type="button" id="sp-clear-btn">Clear</button>
+      </div>
+      <div id="sp-search-results" class="sp-results-list"></div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">2. Position Details Card</h2>
+      <div id="sp-position-details" class="tool-note">Select a mapped position to see pay grade, min-to-mid range, revised profile, proposed title, and vacancy mapping.</div>
+      <div class="sp-copy-row">
+        <button class="btn-secondary" type="button" data-sp-copy="position">Copy position details</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="sp-estimator">
+    <div class="card">
+      <h2 class="section-title">3. Salary Placement Estimator</h2>
+      <div class="builder-grid">
+        <div class="form-group">
+          <label for="sp-yoe">Years of experience</label>
+          <input id="sp-yoe" type="number" min="0" step="0.1" placeholder="e.g. 4">
+        </div>
+        <div class="form-group">
+          <label for="sp-exception-area">Exception area</label>
+          <select id="sp-exception-area">
+            <option value="No">No</option>
+            <option value="Student Affairs">Student Affairs</option>
+            <option value="Basic Needs">Basic Needs</option>
+            <option value="E3">E3</option>
+            <option value="Unsure">Unsure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sp-old-midpoint">Old midpoint, optional</label>
+          <input id="sp-old-midpoint" type="number" min="0" step="1" placeholder="e.g. 85000">
+        </div>
+        <div class="form-group">
+          <label for="sp-proposed-approved">Proposed title approved?</label>
+          <select id="sp-proposed-approved">
+            <option value="false">No / not applicable</option>
+            <option value="true">Yes</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="sp-notes">Notes, optional</label>
+          <textarea id="sp-notes" placeholder="Add hiring manager chain, VC check, or mapping notes"></textarea>
+        </div>
+      </div>
+      <div class="sp-toolbar">
+        <button class="btn-primary" type="button" id="sp-calculate-btn">Run QA Audit</button>
+        <button class="btn-secondary" type="button" data-sp-sample="pass">Load Basic PASS Sample</button>
+        <button class="btn-secondary" type="button" data-sp-sample="missing-yoe">Load Missing YOE Sample</button>
+        <button class="btn-secondary" type="button" data-sp-sample="exception">Load Exception Area Sample</button>
+        <button class="btn-secondary" type="button" data-sp-sample="old-midpoint">Load Old Midpoint Lower Sample</button>
+        <button class="btn-secondary" type="button" data-sp-sample="no-match">Load No Match Sample</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="sp-exception">
+    <div class="card">
+      <h2 class="section-title">4. Exception Checker</h2>
+      <div class="alert warn">
+        <div class="alert-icon">!</div>
+        <div><strong>Reminder:</strong> Student Affairs, Basic Needs, and E3 are exception areas. If unsure, check the hiring manager chain up to the VC. If still unsure, mark the item Needs Review.</div>
+      </div>
+      <div id="sp-exception-result" class="tool-note">Run the QA audit to see exception and escalation status.</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="sp-req">
+    <div class="card">
+      <h2 class="section-title">5. Req Text Generator</h2>
+      <div id="sp-req-text" class="p-box">Select a position and run the QA audit to generate req language.</div>
+      <div class="sp-copy-row">
+        <button class="btn-secondary" type="button" data-sp-copy="req">Copy Req Text</button>
+      </div>
+      <div class="alert info">
+        <div class="alert-icon">i</div>
+        <div>All new staff job reqs should include the new pay grade and min-to-mid range at the bottom of the req. Old pay grades 110-130 should not appear in normal req text.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="sp-audit">
+    <div class="card">
+      <h2 class="section-title">6. QA / Audit Result</h2>
+      <div id="sp-decision"></div>
+      <div id="sp-result-card"></div>
+      <div class="sp-copy-row">
+        <button class="btn-secondary" type="button" data-sp-copy="calculation">Copy salary calculation</button>
+        <button class="btn-secondary" type="button" data-sp-copy="qa">Copy QA report</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">QA Checklist</h2>
+      <div id="sp-checklist" class="tool-note">Run the QA audit to populate checklist rows.</div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="sp-reference">
+    <div class="card">
+      <h2 class="section-title">7. Reference Tables</h2>
+      <div id="sp-reference-tables" class="tool-note">Reference tables load from the salary placement backend.</div>
+    </div>
+  </div>
+</div>
+
 </div><!-- /content -->
 </div><!-- /app -->
 
@@ -3686,5 +3854,6 @@ function calcLEH() {
 }
 
 </script>
+<script src="assets/salary-placement.js"></script>
 </body>
 </html>

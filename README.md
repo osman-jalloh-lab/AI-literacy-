@@ -7,6 +7,8 @@ The repository name is `AI-literacy-`, but the product surfaced by the root site
 ## What is included
 
 - `index.html` - Main static app. Includes AI literacy guidance, prompt builder, HR workflow prompts, department email templates, EAD/work authorization prompts, deliverables guidance, and the integrated FY26 LEH rate calculator.
+- `assets/salary-placement.js` - Frontend behavior for the Staff Salary Placement QA tool.
+- `backend/src/` - Express backend for tool APIs, including salary placement routes, controllers, services, data, validators, and tests.
 - `leh-tools/index.html` - Standalone FY26 LEH calculator kept for direct use or separate sharing.
 - `leh-tools/README.md` - Notes for the standalone LEH tool.
 - `.nojekyll` - Keeps GitHub Pages from running Jekyll processing.
@@ -14,7 +16,8 @@ The repository name is `AI-literacy-`, but the product surfaced by the root site
 ## Current architecture
 
 - Fully static HTML, CSS, and JavaScript.
-- No backend, database, authentication, package manager, or build step.
+- Express backend for local/API-backed tools.
+- No database, authentication, or build step.
 - No data is stored by the app.
 - Copy buttons use the browser clipboard API with a fallback for older browser behavior.
 
@@ -26,7 +29,7 @@ The `/leh-tools/` folder remains available as a standalone calculator for teams 
 
 ## Local use
 
-Open `index.html` directly in a browser, or run a small static server from the repository root:
+For static-only review, open `index.html` directly in a browser, or run a small static server from the repository root:
 
 ```bash
 python -m http.server 8000
@@ -42,6 +45,19 @@ Standalone LEH tool:
 
 ```text
 http://localhost:8000/leh-tools/
+```
+
+For API-backed tools such as Staff Salary Placement QA:
+
+```bash
+npm install
+npm start
+```
+
+Then visit:
+
+```text
+http://localhost:3000/
 ```
 
 ## GitHub Pages deployment
@@ -70,7 +86,7 @@ Never paste real employee names, Social Security numbers, medical information, i
 
 ## Known limitations
 
-- Static prototype only; no real AI model integration yet.
-- No automated test suite yet.
+- Static prototype with an Express backend for selected tools; no real AI model integration yet.
+- Backend tests currently cover salary placement logic only.
 - No analytics, error logging, or release automation beyond branch-based GitHub Pages deployment.
 - Accessibility can be improved with landmarks, ARIA states, and reduced reliance on inline click handlers.
