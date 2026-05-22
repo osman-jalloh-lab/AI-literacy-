@@ -1,13 +1,13 @@
-# LEH Tools — FY26 LEH Rate Calculator
+# LEH Tools - FY26 LEH Rate Calculator
 
 Standalone calculator for rehired adjunct faculty FY26 LEH rates.
 
 ## Structure
 
-- `index.html` — Fully self-contained calculator
+- `index.html` - Fully self-contained calculator
 - No backend, no database, no dependencies
 - ~460 lines of clean HTML/CSS/JS
-- Netlify-ready (drag & drop)
+- Static-host ready
 
 ## Features
 
@@ -29,10 +29,27 @@ Standalone calculator for rehired adjunct faculty FY26 LEH rates.
 
 ## Deploy
 
-Standalone or add to main app later:
+This folder is intentionally kept as a standalone version of the LEH calculator.
 
-1. **Standalone:** Upload `index.html` to Netlify
-2. **Subfolder:** Place in `/leh-tools/` and link from main app
+The integrated calculator in the root `index.html` is the main HR AI Companion version. Use this standalone folder when a smaller direct link is useful.
+
+Standalone URL when deployed with GitHub Pages:
+
+```text
+https://osman-jalloh-lab.github.io/AI-literacy-/leh-tools/
+```
+
+Local preview:
+
+```bash
+python -m http.server 8000
+```
+
+Then open:
+
+```text
+http://localhost:8000/leh-tools/
+```
 
 ---
 
